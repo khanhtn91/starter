@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+body, html {
+    width: 100%;
+    margin: auto;
+    background-color: #EAE9EF;
+}
+path {  stroke: #fff; }
+path:hover {  opacity:0.9; }
+rect:hover {  fill:blue; }
+.axis {  font: 10px sans-serif; }
+.legend tr{    border-bottom:1px solid grey; }
+.legend tr:first-child{    border-top:1px solid grey; }
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.x.axis path {  display: none; }
+.legend{
+    margin-bottom:76px;
+    display:inline-block;
+    border-collapse: collapse;
+    border-spacing: 0px;
+}
+.legend td{
+    padding:4px 5px;
+    vertical-align:bottom;
+}
+.legendFreq, .legendPerc{
+    align:right;
+    width:50px;
+}
+
+</style>
+<body>
+<div id='chart'>
+</div>
+<script src="scripts/d3.min.js"></script>
+<script>
+function render(fData){
+    var defaultColor = 'steelblue';
+
+    function columnChart(fD){
+        var hG={},    hGDim = {t: 60, r: 0, b: 30, l: 0};
+
+        hGDim.w = window.innerWidth - hGDim.l - hGDim.r,
+        hGDim.h = window.innerHeight - hGDim.t - hGDim.b - 20;
+
+        var hGsvg = d3.select('#chart').append("svg")
+            .attr("width", hGDim.w + hGDim.l + hGDim.r)
+            .attr("height", hGDim.h + hGDim.t + hGDim.b).append("g")
+            .attr("transform", "translate(" + hGDim.l + "," + hGDim.t + ")");
+
+        var x = d3.scale.ordinal().rangeRoundBands([0, hGDim.w], 0.1)
+                .domain(fD.map(function(d) { return d[0]; }));
+
+        hGsvg.append("g").attr("class", "x axis")
+            .attr("transform", "translate(0," + hGDim.h + ")")
+            .call(d3.svg.axis().scale(x).orient("bottom"));
+
+        var y = d3.scale.linear().range([hGDim.h, 0])
+                .domain([0, d3.max(fD, function(d) { return d[1]; })]);
+
+        var bars = hGsvg.selectAll(".bar").data(fD).enter()
+                .append("g").attr("class", "bar");
+
+        bars.append("rect")
+            .attr("x", function(d) { return x(d[0]); })
+            .attr("y", function(d) { return y(d[1]); })
+            .attr("width", x.rangeBand())
+            .attr("height", function(d) { return hGDim.h - y(d[1]); })
+            .attr('fill', function(d) { return (d[2]) ? d[2] : defaultColor });
+
+        bars.append("text").text(function(d){ return d3.format(",")(d[1])})
+            .attr("x", function(d) { return x(d[0]) + x.rangeBand()/2; })
+            .attr("y", function(d) { return y(d[1]) - 5; })
+            .attr("text-anchor", "middle");
+
+        return hG;
+    }
+
+    var hG = columnChart(fData);
+}
+</script>
