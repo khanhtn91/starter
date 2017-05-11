@@ -4,9 +4,7 @@ import { reducer as formReducer } from 'redux-form'
 import createSaga from './sideEffects'
 import commonReducer from './reducers'
 import routeReducer from './routeReducers'
-import authenticationReducer from '../modules/authentication/reducers'
 import homeReducer from '../modules/home/reducers'
-import demoReducer from '../modules/demo/reducers'
 
 const createMiddlewares = (sagaMiddleware) => {
   const middlewares = []
@@ -21,9 +19,7 @@ const createReducers = (reducers) => {
     common: commonReducer,
     route: routeReducer,
     form: formReducer,
-    authentication: authenticationReducer,
     home: homeReducer,
-    demo: demoReducer,
     ...reducers
   })
 }
