@@ -1,12 +1,36 @@
 import React from 'react'
 import { connect, Provider } from 'react-redux'
-import { BackAndroid } from 'react-native'
-import { Scene, Router, Actions } from 'react-native-router-flux'
+import { BackAndroid, Text, View } from 'react-native'
+import { Scene, Router, Actions, ActionConst } from 'react-native-router-flux'
 import { initStore } from './common/store'
+import IconButton from './common/components/IconButton'
 import Home from './pages/Home'
+import News from './pages/News'
+import Read from './pages/Read'
+import Open from './pages/Open'
+import Icon from 'react-native-vector-icons/Ionicons'
 
 const RouterWithRedux = connect()(Router)
 const store = initStore()
+
+class TabIcon extends React.Component {
+  render () {
+    const { title, selected, myIcon } = this.props
+    return (
+      <View 
+        style={{
+          justifyContent: 'space-around', 
+          alignItems: 'center'
+        }}
+      >
+        <Icon name={myIcon} size={20} color={selected ? 'red' :'black'} />
+        {title && (
+          <Text>{title}</Text>
+        )}
+      </View>
+    )
+  }
+}
 
 class App extends React.Component {
   componentWillMount = () => {
@@ -18,7 +42,34 @@ class App extends React.Component {
       <Provider store={store}>
         <RouterWithRedux duration={300} animation='fade'>
           <Scene key='root'>
-            <Scene key='home' component={Home} initial hideNavBar />
+            <Scene key="read" hideNavBar={true} component={Read}/>
+            <Scene key="open" hideNavBar={true} component={Open}/>
+            <Scene key="main" initial tabs={true} tabBarStyle={{height: 60, backgroundColor: 'white'}}>
+              <Scene key="category" 
+                component={Home} 
+                title="Category" 
+                myIcon={'ios-albums-outline'} 
+                hideNavBar={true} 
+                icon={TabIcon}
+              />
+              <Scene 
+                key="news" 
+                initial 
+                component={News} 
+                title="News" 
+                myIcon={'ios-paper-plane-outline'} 
+                hideNavBar={true} 
+                icon={TabIcon}
+              />
+              <Scene 
+                key="your" 
+                component={News} 
+                title="Your" 
+                myIcon={'ios-person-outline'} 
+                hideNavBar={true} 
+                icon={TabIcon}
+              />
+            </Scene>
           </Scene>
         </RouterWithRedux>
       </Provider>
