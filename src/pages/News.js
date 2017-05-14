@@ -5,6 +5,7 @@ import {
   Image,
   ListView,
   TouchableOpacity,
+  LayoutAnimation
 } from 'react-native'
 import { Col, Row, Grid } from 'react-native-easy-grid'
 import { Actions } from 'react-native-router-flux'
@@ -28,7 +29,7 @@ export default class News extends Component {
   }
 
   async getList (page, list = []) {
-    let listNews = await controllerNews.getListNews(`http://hamtruyen.vn/danhsach/P${page}/index.html?sort=1`)
+    let listNews = await controllerNews.getListNews(`http://hamtruyen.vn/danhsach/P${page}/index.html?sort=2`)
     
     if (listNews) {
       list = list.concat(listNews.listManga)
@@ -127,6 +128,10 @@ export default class News extends Component {
     )
   }
 
+  componentWillUpdate () {
+    LayoutAnimation.easeInEaseOut()
+  }
+
   render () {
     const { source, hots, size } = this.state
     return (
@@ -138,7 +143,6 @@ export default class News extends Component {
         <Grid>
           <Row 
             onLayout={size => {
-              console.log('change')
               this.setState({size: size.nativeEvent})
             }} 
             style={{backgroundColor: 'transparent'}}

@@ -37,7 +37,7 @@ export const controllerNews = {
       }
       
     } catch (e) {
-      console.log(error)
+      console.log(e)
       return null
     }
   },

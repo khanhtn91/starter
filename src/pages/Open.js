@@ -4,7 +4,8 @@ import {
   Text,
   Image,
   ListView,
-  Picker
+  Picker,
+  LayoutAnimation
 } from 'react-native'
 import { Col, Row, Grid } from 'react-native-easy-grid'
 import { Actions } from 'react-native-router-flux'
@@ -44,14 +45,12 @@ export default class Open extends Component {
 
   async _onValueChange (value) {
     const { current, chaps } = this.state
-    console.log(current)
     let { item } = this.props
 
     if (value && current != value) {
       item.url = value
 
       let manga = await controllerNews.getManga(item)
-      console.log(manga)
       this.setState({
         chaps: manga.chaps,  
         pages: manga.pages,
@@ -60,7 +59,9 @@ export default class Open extends Component {
     }
   }
 
-
+  componentWillUpdate () {
+    LayoutAnimation.easeInEaseOut()
+  }
 
   renderPages (pages) {
     let source = this.dataSource.cloneWithRows(pages)

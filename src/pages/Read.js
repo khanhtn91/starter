@@ -4,12 +4,14 @@ import {
   Text,
   Image,
   TouchableOpacity,
-  ListView
+  ListView,
+  LayoutAnimation
 } from 'react-native'
 import { Col, Row, Grid } from 'react-native-easy-grid'
 import { Actions, ActionConst } from 'react-native-router-flux'
 import styles from '../common/styles/Page'
 import { Card, ListItem, Button } from 'react-native-elements'
+import Swipeout from 'react-native-swipeout'
 
 import { controllerNews } from '../common/utils/controller'
 
@@ -35,23 +37,55 @@ export default class Home extends Component {
     }
   }
 
+  componentWillUpdate () {
+    LayoutAnimation.easeInEaseOut()
+  }
+
   renderChap (item, index, information) {
     item = Object.assign(item, {information})
+    let btns = [
+      {
+        text: 'Save',
+        onPress: () => { console.log(item) },
+        type: 'primary',
+      },
+      {
+        text: 'Books',
+        onPress: () => { console.log(item) },
+        type: 'secondary',
+      }
+    ]
     return (
-      <TouchableOpacity
-        key={index}
-        onPress={() => {Actions.open({item, type: ActionConst.REPLACE})}}
-        style={{backgroundColor: 'transparent', flexDirection: 'row', height: 30, width: '100%'}}
+      <Swipeout
+        rowID={index}
+        right={btns}
+        backgroundColor={'#ffffff'}
+        autoClose={true}
       >
-        <Text style={{flex: 2}}>
-          {item.title}
-        </Text>
-        <View style={{flex: 1, alignItems: 'flex-end'}}>
-          <Text>
-            {item.date}
+        <TouchableOpacity
+          key={index}
+          onPress={() => {Actions.open({item, type: ActionConst.REPLACE})}}
+          style={{
+            backgroundColor: 'transparent',
+            flexDirection: 'row',
+            height: 40,
+            alignItems: 'center',
+            flex: 1,
+            justifyContent: 'center',
+            paddingLeft: 5,
+            paddingRight: 5
+          }}
+        >
+          <Text style={{flex: 2}}>
+            {item.title}
           </Text>
-        </View>
-      </TouchableOpacity>
+          <View style={{flex: 1, alignItems: 'flex-end'}}>
+            <Text>
+              {item.date}
+            </Text>
+          </View>
+        </TouchableOpacity>
+      </Swipeout>
     )
   }
 
@@ -64,7 +98,6 @@ export default class Home extends Component {
         dataSource={source}
         horizontal={false}
         renderRow={(item, index) => this.renderChap(item, index, information)}
-        contentContainerStyle={{flexDirection: 'row', flexWrap: 'wrap'}}
       />
     )
   }
@@ -105,13 +138,11 @@ export default class Home extends Component {
             </Card>
           </Row>
           <Row size={35}>
-            {information && (
-              <Card
-                containerStyle={{flexDirection: 'column', flex: 1, marginBottom: 10}}
-                title='LIST CHAPTER'>
-                {this.renderChaps(information)}
-              </Card>
-            )}
+            <Card
+              containerStyle={{flexDirection: 'column', flex: 1, marginBottom: 10}}
+              title='LIST CHAPTER'>
+              {information && (this.renderChaps(information))}
+            </Card>
           </Row>
         </Grid>
 	    </Image>

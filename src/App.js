@@ -4,7 +4,7 @@ import { BackAndroid, Text, View } from 'react-native'
 import { Scene, Router, Actions, ActionConst } from 'react-native-router-flux'
 import { initStore } from './common/store'
 import IconButton from './common/components/IconButton'
-import Home from './pages/Home'
+import Category from './pages/Category'
 import News from './pages/News'
 import Read from './pages/Read'
 import Open from './pages/Open'
@@ -15,7 +15,7 @@ const store = initStore()
 
 class TabIcon extends React.Component {
   render () {
-    const { title, selected, myIcon } = this.props
+    const { title, selected, myIcon, sceneKey } = this.props
     return (
       <View 
         style={{
@@ -44,13 +44,15 @@ class App extends React.Component {
           <Scene key='root'>
             <Scene key="read" hideNavBar={true} component={Read}/>
             <Scene key="open" hideNavBar={true} component={Open}/>
-            <Scene key="main" initial tabs={true} tabBarStyle={{height: 60, backgroundColor: 'white'}}>
+            <Scene key="mainPage" initial tabs={true} tabBarStyle={{height: 60, backgroundColor: 'white'}}>
               <Scene key="category" 
-                component={Home} 
+                component={Category} 
                 title="Category" 
                 myIcon={'ios-albums-outline'} 
                 hideNavBar={true} 
+                hideTabBar={true}
                 icon={TabIcon}
+                type={ActionConst.RESET}
               />
               <Scene 
                 key="news" 
@@ -60,6 +62,7 @@ class App extends React.Component {
                 myIcon={'ios-paper-plane-outline'} 
                 hideNavBar={true} 
                 icon={TabIcon}
+                type={ActionConst.RESET}
               />
               <Scene 
                 key="your" 
@@ -67,7 +70,9 @@ class App extends React.Component {
                 title="Your" 
                 myIcon={'ios-person-outline'} 
                 hideNavBar={true} 
+                hideTabBar={true}
                 icon={TabIcon}
+                type={ActionConst.RESET}
               />
             </Scene>
           </Scene>
