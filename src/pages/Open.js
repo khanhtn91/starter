@@ -118,7 +118,20 @@ export default class Open extends Component {
         resizeMode={'cover'} 
         source={require('../assets/images/background.jpg')}
       >
-      <Grid>
+      <View style={styles.actionButton}>
+        <ActionButton buttonColor="rgba(231,76,60,1)" autoInactive={false}>
+          <ActionButton.Item buttonColor='#9b59b6' title="GO TO TOP" onPress={() => this._controlPress('up')}>
+            <Icon name="md-arrow-dropup" size={20} color='#ffffff' />
+          </ActionButton.Item>
+          <ActionButton.Item buttonColor='#3498db' title="SWIPE MODE" onPress={() => this._controlPress('view')}>
+            <Icon name="md-albums" size={20} color='#ffffff' />
+          </ActionButton.Item>
+          <ActionButton.Item buttonColor='#1abc9c' title="BACK" onPress={() => this._controlPress('back')}>
+            <Icon name="md-arrow-back" size={20} color='#ffffff' />
+          </ActionButton.Item>
+        </ActionButton>
+      </View>
+      <Grid style={{marginTop: 24}}>
         <Row size={5}>
           <Card
             containerStyle={{flexDirection: 'row', flex: 1, height: '85%', margin: 5, padding: 0}}
@@ -166,19 +179,6 @@ export default class Open extends Component {
               />)}
             </Row>
           )}
-          <View style={styles.actionButton}>
-            <ActionButton buttonColor="rgba(231,76,60,1)" autoInactive={false}>
-              <ActionButton.Item buttonColor='#9b59b6' title="GO TO TOP" onPress={() => this._controlPress('up')}>
-                <Icon name="md-arrow-dropup" size={20} color='#ffffff' />
-              </ActionButton.Item>
-              <ActionButton.Item buttonColor='#3498db' title="SWIPE MODE" onPress={() => this._controlPress('view')}>
-                <Icon name="md-albums" size={20} color='#ffffff' />
-              </ActionButton.Item>
-              <ActionButton.Item buttonColor='#1abc9c' title="BACK" onPress={() => this._controlPress('back')}>
-                <Icon name="md-arrow-back" size={20} color='#ffffff' />
-              </ActionButton.Item>
-            </ActionButton>
-          </View>
         </Grid>
 	    </Image>
     )

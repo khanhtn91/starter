@@ -15,6 +15,7 @@ import styles from '../common/styles/Page'
 import { Card, ListItem, List, Button, SideMenu } from 'react-native-elements'
 import ActionButton from 'react-native-action-button'
 import Icon from 'react-native-vector-icons/Ionicons'
+import TabBar from '../common/components/TabBar'
 
 import { controllerNews } from '../common/utils/controller'
 
@@ -179,9 +180,25 @@ export default class Category extends Component {
           }}
         >
         <Grid style={{backgroundColor: 'transparent', width: size ? (size.layout.width - 50) : '100%'}}>
-          <Row size={6}>
+          <View style={[styles.actionButton, {bottom: 100}]}>
+            <ActionButton buttonColor="rgba(231,76,60,1)" autoInactive={true}>
+              <ActionButton.Item buttonColor='#3498db' title="MENU" onPress={() => this._controlPress('menu')}>
+                <Icon name="md-albums" size={20} color='#ffffff' />
+              </ActionButton.Item>
+              <ActionButton.Item buttonColor='#9b59b6' title="GO TO TOP" onPress={() => this._controlPress('up')}>
+                <Icon name="md-arrow-dropup" size={20} color='#ffffff' />
+              </ActionButton.Item>
+              <ActionButton.Item buttonColor='#3498db' title="RELOAD" onPress={() => this._controlPress('reload')}>
+                <Icon name="md-refresh" size={20} color='#ffffff' />
+              </ActionButton.Item>
+              <ActionButton.Item buttonColor='#1abc9c' title="BACK" onPress={() => this._controlPress('back')}>
+                <Icon name="md-arrow-back" size={20} color='#ffffff' />
+              </ActionButton.Item>
+            </ActionButton>
+          </View>
+          <Row size={0} style={{overflow: 'hidden'}}>
             <Card
-              containerStyle={{flex: 1, height: '100%', margin: 5, padding: 0}}
+              containerStyle={{flex: 1, height: '100%', margin: 5, padding: 0, overflow: 'hidden'}}
             >
               <View style={{width: '100%', height: '100%', flexDirection: 'row'}}>
                 <View style={{flex: 1, height: '100%', padding: 5}}>
@@ -208,6 +225,7 @@ export default class Category extends Component {
                 dataSource={source}
                 ref={listView => this.listView = listView}
                 renderRow={(item, index) => this.renderItem(item, index)}
+                pageSize={30}
                 contentContainerStyle={{
                   flexDirection: 'row', 
                   flexWrap: 'wrap', 
@@ -224,22 +242,9 @@ export default class Category extends Component {
               />
             )}
           </Row>
-          <View style={styles.actionButton}>
-            <ActionButton buttonColor="rgba(231,76,60,1)" autoInactive={true}>
-              <ActionButton.Item buttonColor='#3498db' title="MENU" onPress={() => this._controlPress('menu')}>
-                <Icon name="md-albums" size={20} color='#ffffff' />
-              </ActionButton.Item>
-              <ActionButton.Item buttonColor='#9b59b6' title="GO TO TOP" onPress={() => this._controlPress('up')}>
-                <Icon name="md-arrow-dropup" size={20} color='#ffffff' />
-              </ActionButton.Item>
-              <ActionButton.Item buttonColor='#3498db' title="RELOAD" onPress={() => this._controlPress('reload')}>
-                <Icon name="md-refresh" size={20} color='#ffffff' />
-              </ActionButton.Item>
-              <ActionButton.Item buttonColor='#1abc9c' title="BACK" onPress={() => this._controlPress('back')}>
-                <Icon name="md-arrow-back" size={20} color='#ffffff' />
-              </ActionButton.Item>
-            </ActionButton>
-          </View>
+          <Row style={{height: 60}}>
+            <TabBar selected={1} Actions={Actions}/>
+          </Row>
         </Grid>
       </Image>
     </SideMenu>

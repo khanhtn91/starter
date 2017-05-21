@@ -11,7 +11,8 @@ import { Col, Row, Grid } from 'react-native-easy-grid'
 import { Actions } from 'react-native-router-flux'
 import styles from '../common/styles/Page'
 import { Card, ListItem, Button } from 'react-native-elements'
-import Swiper from 'react-native-deck-swiper';
+import Swiper from 'react-native-deck-swiper'
+import TabBar from '../common/components/TabBar'
 
 import { controllerNews } from '../common/utils/controller'
 
@@ -129,7 +130,7 @@ export default class News extends Component {
   }
 
   componentWillUpdate () {
-    LayoutAnimation.easeInEaseOut()
+    LayoutAnimation.spring()
   }
 
   render () {
@@ -162,8 +163,11 @@ export default class News extends Component {
               />
             )}
           </Row>
-          <Row style={{height: 300}}>
+          <Row style={{height: 250}}>
             {source && this.renderListNews(source)}
+          </Row>
+          <Row style={{height: 60}}>
+            <TabBar selected={2} Actions={Actions} />
           </Row>
         </Grid>
       </Image>

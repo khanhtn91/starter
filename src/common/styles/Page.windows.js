@@ -5,7 +5,8 @@ export default StyleSheet.create({
     width: undefined,
     height: undefined,
     flex: 1,
-    backgroundColor: 'black'
+    backgroundColor: 'black',
+    marginTop: -24
   },
   container: {
     flex: 1,
@@ -34,6 +35,7 @@ export default StyleSheet.create({
     bottom: 40,
     right: 35,
     width: 50,
-    height: 50
+    height: 50,
+    zIndex: 999
   }
 })

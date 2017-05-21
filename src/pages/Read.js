@@ -5,7 +5,8 @@ import {
   Image,
   TouchableOpacity,
   ListView,
-  LayoutAnimation
+  LayoutAnimation,
+  ScrollView
 } from 'react-native'
 import { Col, Row, Grid } from 'react-native-easy-grid'
 import { Actions, ActionConst } from 'react-native-router-flux'
@@ -38,7 +39,7 @@ export default class Home extends Component {
   }
 
   componentWillUpdate () {
-    LayoutAnimation.easeInEaseOut()
+    LayoutAnimation.spring()
   }
 
   renderChap (item, index, information) {
@@ -102,6 +103,12 @@ export default class Home extends Component {
     )
   }
 
+  readNow (information) {
+    let item = information.chaps.pop()
+    item = Object.assign(item, {information})
+    Actions.open({item, type: ActionConst.REPLACE})
+  }
+
   render () {
     const { item } = this.props
     const { information } = this.state
@@ -111,30 +118,43 @@ export default class Home extends Component {
         resizeMode={'cover'} 
         source={require('../assets/images/background.jpg')}
       >
-        <Grid>
+        <Grid style={{marginTop: 15}}>
           <Row size={65}>
             <Card
               containerStyle={{flex: 1}}
+              wrapperStyle={{flex: 1, margin: 0, padding: 0}}
               title={item.title}
-              imageWrapperStyle={{height: 440}}
-              imageStyle={{height: 250}}
-              image={{uri: item.image}}>
-              {information && (
-                <View style={{height: 110, marginBottom: 10}}>
-                  <Text style={{marginBottom: 0, fontWeight: '500'}}>
-                    {information.category}
-                  </Text>
-                  <Text style={{marginBottom: 0}}>
-                    {information.summary}
-                  </Text>
+            >
+              <View style={{width: '100%', height: '100%', flexDirection: 'column', flex: 1}}>
+                <View style={{flex: 3}}>
+                  <Image 
+                    resizeMode={'cover'} 
+                    source={{uri: item.image}} 
+                    style={{width: '100%', height: '100%'}} 
+                  />
                 </View>
-              )}
-              <Button
-                icon={{name: 'code'}}
-                backgroundColor='#03A9F4'
-                fontFamily='Lato'
-                buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
-                title='VIEW NOW' />
+                <View style={{flex: 4}}>
+                {information && (
+                  <ScrollView style={{height: '100%', width: '100%', marginBottom: 10}}>
+                    <Text style={{marginBottom: 0, fontWeight: '500'}}>
+                      {information.category}
+                    </Text>
+                    <Text style={{marginBottom: 0}}>
+                      {information.summary}
+                    </Text>
+                  </ScrollView>
+                )}
+                </View>
+                <View style={{flex: 1}}>
+                  <Button
+                    onPress={() => this.readNow(information)}
+                    icon={{name: 'code'}}
+                    backgroundColor='#03A9F4'
+                    fontFamily='Lato'
+                    buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
+                    title='READ NOW' />
+                </View>
+              </View>
             </Card>
           </Row>
           <Row size={35}>
