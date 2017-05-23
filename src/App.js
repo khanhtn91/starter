@@ -13,14 +13,23 @@ const RouterWithRedux = connect()(Router)
 const store = initStore()
 
 class App extends React.Component {
-  componentWillMount = () => {
+  
+  componentDidMount () {
     BackAndroid.addEventListener('hardwareBackPress', () => Actions.pop())
+  }
+
+  componentWillMount () {
+    BackAndroid.removeEventListener('hardwareBackPress', () => Actions.pop())
   }
 
   render () {
     return (
       <Provider store={store}>
-        <RouterWithRedux duration={300} animation='fade'>
+        <RouterWithRedux 
+		  duration={300} 
+		  animation='fade'
+	      backAndroidHandler={() => true}
+	    >
           <Scene key='root'>
             <Scene key="read" hideNavBar={true} component={Read}/>
             <Scene key="open" hideNavBar={true} component={Open}/>
