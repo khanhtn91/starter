@@ -26,18 +26,16 @@ export default class Open extends Component {
     this.state = {
       chaps: props.item.information.chaps,
       pages: [],
-      flip: false, 
+      flip: false,
       current: ''
     }
-    console.log(props)
   }
 
   async componentDidMount () {
     const { item } = this.props
     let manga = await controllerNews.getManga(item)
-    console.log(manga)
     this.setState({
-      chaps: manga.chaps,  
+      chaps: manga.chaps,
       pages: manga.pages,
       current: item.url
     })
@@ -52,7 +50,7 @@ export default class Open extends Component {
 
       let manga = await controllerNews.getManga(item)
       this.setState({
-        chaps: manga.chaps,  
+        chaps: manga.chaps,
         pages: manga.pages,
         current: value
       })
@@ -60,7 +58,7 @@ export default class Open extends Component {
   }
 
   componentWillUpdate () {
-    LayoutAnimation.easeInEaseOut()
+    LayoutAnimation.spring()
   }
 
   renderPages (pages) {
@@ -75,7 +73,7 @@ export default class Open extends Component {
         enableEmptySections={true}
         renderRow={(item, index) => (
           <View style={{flexDirection: 'row'}}>
-            <FitImage 
+            <FitImage
               resizeMode={'stretch'}
               source={{uri: item.image}}
             />
@@ -100,7 +98,7 @@ export default class Open extends Component {
       case 'back':
         Actions.pop()
       break
-    } 
+    }
   }
 
   render () {
@@ -113,11 +111,12 @@ export default class Open extends Component {
     }
 
     return (
-      <Image 
-        style={styles.baseContainer} 
-        resizeMode={'cover'} 
+      <Image
+        style={styles.baseContainer}
+        resizeMode={'cover'}
         source={require('../assets/images/background.jpg')}
       >
+      <controllerNews.ProgressBar/>
       <View style={styles.actionButton}>
         <ActionButton buttonColor="rgba(231,76,60,1)" autoInactive={false}>
           <ActionButton.Item buttonColor='#9b59b6' title="GO TO TOP" onPress={() => this._controlPress('up')}>
@@ -158,13 +157,13 @@ export default class Open extends Component {
             </Row>
           ) : (
             <Row size={95}>
-              {images && 
-                (<ImageViewer 
+              {images &&
+                (<ImageViewer
                   style={{
                     backgroundColor: 'transparent',
                     flex: 1,
                     marginTop: 5
-                  }} 
+                  }}
                   imageUrls={images}
                   renderArrowLeft={() => (
                     <View style={{width: 50, height: 50, zIndex: 99, marginLeft: 10}}>

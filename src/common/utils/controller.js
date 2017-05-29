@@ -1,9 +1,12 @@
 import axios from 'axios'
 import cheerio from 'cheerio-without-node-native';
+import ProgressBar from '../components/ProgressBar'
 
 export const controllerNews = {
+  ProgressBar: ProgressBar.Component,
   getListNews: async (url, params = {}) => {
     try {
+      ProgressBar.show()
       let html = await axios({method: 'GET', url})
       if (html.status === 200) {
         $ = cheerio.load(html.data, {
@@ -30,19 +33,21 @@ export const controllerNews = {
         })
 
         total = $('.pagination').find('a').length
-
         return { listManga, listTypes, total}
       } else {
         return null
       }
-      
+
     } catch (e) {
       console.log(e)
       return null
+    } finally {
+      ProgressBar.hide()
     }
   },
   getListHot: async (url, params = {}) => {
     try {
+      ProgressBar.show()
       let html = await axios({method: 'GET', url: 'http://hamtruyen.vn/'})
       if (html.status === 200) {
         $ = cheerio.load(html.data, {
@@ -68,56 +73,74 @@ export const controllerNews = {
     } catch (e) {
       console.log(error)
       return null
+    } finally {
+      ProgressBar.hide()
     }
   },
   getInformation: async (item) => {
-    let html = await axios({method: 'GET', url: `http://hamtruyen.vn${item.url}`})
-    if (html.status === 200) {
-      $ = cheerio.load(html.data, {
-        normalizeWhitespace: true
-      })
+    try {
+      ProgressBar.show()
+      let html = await axios({method: 'GET', url: `http://hamtruyen.vn${item.url}`})
+      if (html.status === 200) {
+        $ = cheerio.load(html.data, {
+          normalizeWhitespace: true
+        })
 
-      let category = $('p.row_theloai').text()
-      let summary = $('p#tomtattruyen').text()
-      let chaps = []
-      $('div.nano section.row_chap').each( function(index, element) {
-        let chap = {}
-        let a = $(element).find('a')
-        chap.date = $(element).find('div.ngaydang').text()
-        chap.title = a.text()
-        chap.url = a.attr('href')
-        chaps.push(chap)
-      })
+        let category = $('p.row_theloai').text()
+        let summary = $('p#tomtattruyen').text()
+        let chaps = []
+        $('div.nano section.row_chap').each( function(index, element) {
+          let chap = {}
+          let a = $(element).find('a')
+          chap.date = $(element).find('div.ngaydang').text()
+          chap.title = a.text()
+          chap.url = a.attr('href')
+          chaps.push(chap)
+        })
 
-      return { category, summary, chaps}
-    } else {
+        return { category, summary, chaps}
+      } else {
+        return null
+      }
+    } catch (e) {
+      console.log(error)
       return null
+    } finally {
+      ProgressBar.hide()
     }
   },
   getManga: async (item) => {
-    let html = await axios({method: 'GET', url: `http://hamtruyen.vn${item.url}`})
-    if (html.status === 200) {
-      $ = cheerio.load(html.data, {
-        normalizeWhitespace: true
-      })
-      let pages = []
-      let chaps = []
-      let count = 1
-      $('div#content_chap img').each( function(index, element) { 
-        let page = $(element).attr('src')
-        pages.push({page: count, image: page})
-        count++
-      });
-      $('select#ddl_listchap_bottom').first().find('option').each( function(index, element) { 
-        let chap = {}
-        chap.title = String($(element).text())
-        chap.url = '/doc-truyen/' + String($(element).attr('value')) + '.html'
-        chaps.push(chap)
-      });
+    try {
+      ProgressBar.show()
+      let html = await axios({method: 'GET', url: `http://hamtruyen.vn${item.url}`})
+      if (html.status === 200) {
+        $ = cheerio.load(html.data, {
+          normalizeWhitespace: true
+        })
+        let pages = []
+        let chaps = []
+        let count = 1
+        $('div#content_chap img').each( function(index, element) {
+          let page = $(element).attr('src')
+          pages.push({page: count, image: page})
+          count++
+        });
+        $('select#ddl_listchap_bottom').first().find('option').each( function(index, element) {
+          let chap = {}
+          chap.title = String($(element).text())
+          chap.url = '/doc-truyen/' + String($(element).attr('value')) + '.html'
+          chaps.push(chap)
+        });
 
-      return { pages, chaps}
-    } else {
+        return { pages, chaps}
+      } else {
+        return null
+      }
+    } catch (e) {
+      console.log(error)
       return null
+    } finally {
+      ProgressBar.hide()
     }
   }
 }

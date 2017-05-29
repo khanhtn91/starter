@@ -49,12 +49,12 @@ export default class TabBar extends Component {
     return (
       <View style={styles.container}>
         {icons && icons.map((item) => (
-          <TouchableOpacity 
+          <TouchableOpacity
             key={item.id}
             onPress={() => item.action()}
             style={{
               flex: 1,
-              justifyContent: 'space-around', 
+              justifyContent: 'space-around',
               alignItems: 'center'
             }}
           >
@@ -69,9 +69,8 @@ export default class TabBar extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1, 
-    width: '100%', 
-    height: 60, 
+    width: '100%',
+    height: 60,
     backgroundColor: 'white',
     flexDirection: 'row'
   }
