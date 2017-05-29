@@ -15,6 +15,7 @@ import { Card, ListItem, Button } from 'react-native-elements'
 import Swipeout from 'react-native-swipeout'
 
 import { controllerNews } from '../common/utils/controller'
+import Storage from '../common/utils/storage'
 
 export default class Home extends Component {
   constructor (props) {
@@ -109,6 +110,12 @@ export default class Home extends Component {
     Actions.open({item, type: ActionConst.REPLACE})
   }
 
+  async addBookmark(information) {
+    let item = this.props.item
+    await Storage.savebookmark(item)
+  }
+
+
   render () {
     const { item } = this.props
     const { information } = this.state
@@ -145,14 +152,23 @@ export default class Home extends Component {
                   </ScrollView>
                 )}
                 </View>
-                <View style={{flex: 1}}>
+                <View style={{flex: 1, flexDirection: 'row'}}>
                   <Button
                     onPress={() => this.readNow(information)}
                     icon={{name: 'code'}}
                     backgroundColor='#03A9F4'
                     fontFamily='Lato'
                     buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
+                    style={{width: '50%'}}
                     title='READ NOW' />
+                  <Button
+                    onPress={() => this.addBookmark(information)}
+                    icon={{name: 'code'}}
+                    backgroundColor='#fd9427'
+                    fontFamily='Lato'
+                    buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
+                    style={{width: '50%'}}
+                    title='BOOKMARKS' />
                 </View>
               </View>
             </Card>

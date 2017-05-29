@@ -7,6 +7,7 @@ import Category from './pages/Category'
 import News from './pages/News'
 import Read from './pages/Read'
 import Open from './pages/Open'
+import Bookmarks from './pages/Bookmarks'
 import Icon from 'react-native-vector-icons/Ionicons'
 
 const RouterWithRedux = connect()(Router)
@@ -52,6 +53,7 @@ class App extends React.Component {
                 title="Your" 
                 type={ActionConst.RESET}
               />
+              <Scene key="bookmarks" hideNavBar={true} component={Bookmarks}/>
           </Scene>
         </RouterWithRedux>
       </Provider>

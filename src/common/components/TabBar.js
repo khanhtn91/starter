@@ -36,7 +36,7 @@ export default class TabBar extends Component {
           title: 'Personal',
           icon: 'ios-person-outline',
           action: () => {
-            props.Actions.your()
+            props.Actions.bookmarks()
           }
         }
       ]
