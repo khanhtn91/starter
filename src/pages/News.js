@@ -117,12 +117,12 @@ export default class News extends Component {
         <View style={{flex: 2}}>
           <Image 
             style={{flex: 1}}
-            resizeMode='contain' 
+            resizeMode='contain'
             source={{uri: item.image}}
           />
         </View>
-        <View style={{flex: 2, padding: 20, paddingTop: 40}}>
-          <Text style={{fontSize: 16, fontWeight: '500'}}>{item.title}</Text>
+        <View style={{flex: 2, padding: 20, paddingTop: 40}} >
+          <Text style={{fontSize: 16, fontWeight: '500'}} onPress={() => Actions.read({item})}>{item.title}</Text>
           <Text>{item.chap}</Text>
         </View>
       </View>
@@ -145,7 +145,7 @@ export default class News extends Component {
           <Row 
             onLayout={size => {
               this.setState({size: size.nativeEvent})
-            }} 
+            }}
             style={{backgroundColor: 'transparent'}}
           >
             {(hots && size) && (
