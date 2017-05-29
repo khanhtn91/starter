@@ -120,11 +120,12 @@ export default class Home extends Component {
     const { item } = this.props
     const { information } = this.state
     return (
-      <Image 
-        style={styles.baseContainer} 
-        resizeMode={'cover'} 
+      <Image
+        style={styles.baseContainer}
+        resizeMode={'cover'}
         source={require('../assets/images/background.jpg')}
       >
+        <controllerNews.ProgressBar/>
         <Grid style={{marginTop: 15}}>
           <Row size={65}>
             <Card
@@ -134,10 +135,10 @@ export default class Home extends Component {
             >
               <View style={{width: '100%', height: '100%', flexDirection: 'column', flex: 1}}>
                 <View style={{flex: 3}}>
-                  <Image 
-                    resizeMode={'cover'} 
-                    source={{uri: item.image}} 
-                    style={{width: '100%', height: '100%'}} 
+                  <Image
+                    resizeMode={'cover'}
+                    source={{uri: item.image}}
+                    style={{width: '100%', height: '100%'}}
                   />
                 </View>
                 <View style={{flex: 4}}>

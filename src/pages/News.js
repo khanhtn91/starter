@@ -31,7 +31,7 @@ export default class News extends Component {
 
   async getList (page, list = []) {
     let listNews = await controllerNews.getListNews(`http://hamtruyen.vn/danhsach/P${page}/index.html?sort=2`)
-    
+
     if (listNews) {
       list = list.concat(listNews.listManga)
       let source = this.dataSource.cloneWithRows(list)
@@ -40,7 +40,7 @@ export default class News extends Component {
         list
       })
     }
-  } 
+  }
 
   async getHotList () {
     let hots = await controllerNews.getListHot()
@@ -49,7 +49,7 @@ export default class News extends Component {
         hots
       })
     }
-  } 
+  }
 
   componentDidMount () {
     const { page } = this.state
@@ -63,9 +63,9 @@ export default class News extends Component {
         onPress={() => Actions.read({item})}
         style={{width: 180, height: 225, margin: 5, marginBottom: 80}}
       >
-        <Image 
-          style={{width: 180, height: 225}} 
-          resizeMode={'cover'} 
+        <Image
+          style={{width: 180, height: 225}}
+          resizeMode={'cover'}
           source={{uri: item.image}}
         >
         <View style={
@@ -87,7 +87,7 @@ export default class News extends Component {
             {item.title}
           </Text>
         </View>
-        
+
         </Image>
       </TouchableOpacity>
     )
@@ -115,7 +115,7 @@ export default class News extends Component {
     return (
       <View style={styles.card}>
         <View style={{flex: 2}}>
-          <Image 
+          <Image
             style={{flex: 1}}
             resizeMode='contain'
             source={{uri: item.image}}
@@ -136,13 +136,14 @@ export default class News extends Component {
   render () {
     const { source, hots, size } = this.state
     return (
-      <Image 
-        style={styles.baseContainer} 
-        resizeMode={'cover'} 
+      <Image
+        style={styles.baseContainer}
+        resizeMode={'cover'}
         source={require('../assets/images/background.jpg')}
       >
+        <controllerNews.ProgressBar/>
         <Grid>
-          <Row 
+          <Row
             onLayout={size => {
               this.setState({size: size.nativeEvent})
             }}
