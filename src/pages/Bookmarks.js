@@ -137,6 +137,7 @@ export default class Bookmarks extends Component {
             }
           }}
         >
+          <controllerNews.ProgressBar/>
         <Grid style={{backgroundColor: 'transparent', width: '100%'}}>
           <View style={[styles.actionButton, {bottom: 100}]}>
             <ActionButton buttonColor="rgba(231,76,60,1)" autoInactive={true}>
