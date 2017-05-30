@@ -114,7 +114,7 @@ export default class Bookmarks extends Component {
           }}
         >
           <controllerNews.ProgressBar/>
-        <Grid style={{backgroundColor: 'transparent', width: '100%'}}>
+        <Grid style={{backgroundColor: 'transparent', width: '100%', marginTop:25}}>
 
           <Row size={94}>
             {source && (
