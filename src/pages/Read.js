@@ -16,6 +16,7 @@ import Swipeout from 'react-native-swipeout'
 
 import { controllerNews } from '../common/utils/controller'
 import Storage from '../common/utils/storage'
+import { MessageBarManager, MessageBar } from 'react-native-message-bar'
 
 export default class Home extends Component {
   constructor (props) {
@@ -29,6 +30,7 @@ export default class Home extends Component {
   async componentDidMount () {
     const { item } = this.props
     try {
+      MessageBarManager.registerMessageBar(this.refs.messageBar)
       let information = await controllerNews.getInformation(item)
       information = Object.assign(information, item)
       this.setState({
@@ -41,6 +43,10 @@ export default class Home extends Component {
 
   componentWillUpdate () {
     LayoutAnimation.spring()
+  }
+
+  componentWillUnmount () {
+    MessageBarManager.unregisterMessageBar(this.refs.messageBar)
   }
 
   renderChap (item, index, information) {
@@ -110,9 +116,16 @@ export default class Home extends Component {
     Actions.open({item, type: ActionConst.REPLACE})
   }
 
-  async addBookmark(information) {
+  async addBookmark() {
     let item = this.props.item
     await Storage.savebookmark(item)
+    console.log(MessageBar)
+    MessageBarManager.showAlert({
+      message: 'Bookmarks success',
+      alertType: 'success',
+      viewTopOffset: 25,
+
+    })
   }
 
 
@@ -125,6 +138,7 @@ export default class Home extends Component {
         resizeMode={'cover'}
         source={require('../assets/images/background.jpg')}
       >
+
         <controllerNews.ProgressBar/>
         <Grid style={{marginTop: 15}}>
           <Row size={65}>
@@ -163,7 +177,7 @@ export default class Home extends Component {
                     style={{width: '50%'}}
                     title='READ NOW' />
                   <Button
-                    onPress={() => this.addBookmark(information)}
+                    onPress={() => this.addBookmark()}
                     icon={{name: 'code'}}
                     backgroundColor='#fd9427'
                     fontFamily='Lato'
@@ -182,6 +196,7 @@ export default class Home extends Component {
             </Card>
           </Row>
         </Grid>
+        <MessageBar ref="messageBar" viewTopOffset={24}/>
 	    </Image>
     )
   }

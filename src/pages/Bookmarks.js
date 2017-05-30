@@ -6,17 +6,14 @@ import {
   Image,
   TouchableOpacity,
   LayoutAnimation,
-  ScrollView,
-  TextInput
 } from 'react-native'
-import { Col, Row, Grid } from 'react-native-easy-grid'
-import { Actions, ActionConst } from 'react-native-router-flux'
+import { Row, Grid } from 'react-native-easy-grid'
+import { Actions } from 'react-native-router-flux'
 import styles from '../common/styles/Page'
-import { Card, ListItem, List, Button, SideMenu } from 'react-native-elements'
-import ActionButton from 'react-native-action-button'
-import Icon from 'react-native-vector-icons/Ionicons'
 import TabBar from '../common/components/TabBar'
 import Storage from '../common/utils/storage'
+
+
 
 import { controllerNews } from '../common/utils/controller'
 
@@ -28,21 +25,12 @@ export default class Bookmarks extends Component {
     this.searchText = ''
     this.state = {
       source: null,
-      list: [],
-      page: 1,
-      category: 'All',
-      sort: 1,
-      isOpen: false,
-      size: null,
-      categories: []
     }
   }
 
   async getList (page, category, sort, remove = false, list = []) {
     let listNews = await Storage.bookmarks()
-    
     if (listNews) {
-      console.log(list)
       let source = this.dataSource.cloneWithRows(listNews)
       this.setState({
         source,
@@ -69,7 +57,10 @@ export default class Bookmarks extends Component {
       <TouchableOpacity
          onPress={() => Actions.read({item})}
          style={{width: 132, height: 180, margin: 5}}
-       >
+         onLongPress ={async (e)=>{
+          await this.removeBookmark(item)
+         }}
+      >
 
         <Image
           style={{width: 132, height: 180}}
@@ -93,33 +84,18 @@ export default class Bookmarks extends Component {
     )
   }
 
-  _controlPress (action, params = {}) {
-    switch (action) {
-      case 'up':
-        if (this.listView)
-          this.listView.scrollTo({x: 0, y: 0, animated: true})
-      break
-      case 'reload':
-        const { page, category, sort } = this.state
-          if (!this.searchText) {
-            this.getList(page, category, sort, true)
-          }
-      break
-      case 'menu':
-      const { isOpen } = this.state
-        this.setState({
-          isOpen: !isOpen
-        })
-      break
-      case 'back':
-      console.log(Actions)
-        Actions.root({type: ActionConst.RESET})
-      break
-    } 
-  }
 
   componentWillUpdate () {
     LayoutAnimation.easeInEaseOut()
+  }
+
+  async removeBookmark(girl) {
+    await Storage.removebookmark(girl);
+    let listNews = await Storage.bookmarks()
+    let source = this.dataSource.cloneWithRows(listNews)
+    this.setState({
+      source,
+    })
   }
 
   render () {
@@ -139,44 +115,7 @@ export default class Bookmarks extends Component {
         >
           <controllerNews.ProgressBar/>
         <Grid style={{backgroundColor: 'transparent', width: '100%'}}>
-          <View style={[styles.actionButton, {bottom: 100}]}>
-            <ActionButton buttonColor="rgba(231,76,60,1)" autoInactive={true}>
-              <ActionButton.Item buttonColor='#3498db' title="MENU" onPress={() => this._controlPress('menu')}>
-                <Icon name="md-albums" size={20} color='#ffffff' />
-              </ActionButton.Item>
-              <ActionButton.Item buttonColor='#9b59b6' title="GO TO TOP" onPress={() => this._controlPress('up')}>
-                <Icon name="md-arrow-dropup" size={20} color='#ffffff' />
-              </ActionButton.Item>
-              <ActionButton.Item buttonColor='#3498db' title="RELOAD" onPress={() => this._controlPress('reload')}>
-                <Icon name="md-refresh" size={20} color='#ffffff' />
-              </ActionButton.Item>
-              <ActionButton.Item buttonColor='#1abc9c' title="BACK" onPress={() => this._controlPress('back')}>
-                <Icon name="md-arrow-back" size={20} color='#ffffff' />
-              </ActionButton.Item>
-            </ActionButton>
-          </View>
-          <Row size={0} style={{overflow: 'hidden'}}>
-            <Card
-              containerStyle={{flex: 1, height: '100%', margin: 5, padding: 0, overflow: 'hidden'}}
-            >
-              <View style={{width: '100%', height: '100%', flexDirection: 'row'}}>
-                <View style={{flex: 1, height: '100%', padding: 5}}>
-                  <TextInput
-                    placeholder={'Search text'} 
-                    onChange={(event) => {
-                      this.searchText = event.nativeEvent.text
-                    }} 
-                  />
-                </View>
-                <View style={{width: 80, height: '100%', padding: 1}}>
-                  <Button
-                    icon={{name: 'search'}}
-                    onPress={() => this.searchManga()}
-                  />
-                </View>
-              </View>
-            </Card>
-          </Row>
+
           <Row size={94}>
             {source && (
               <ListView

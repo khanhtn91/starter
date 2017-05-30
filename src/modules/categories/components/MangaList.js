@@ -9,6 +9,7 @@ import {
   ListView
 } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
+import { Actions, ActionConst } from 'react-native-router-flux'
 import { Card, Button } from 'react-native-elements'
 
 import { controllerNews } from '../../../common/utils/controller'
